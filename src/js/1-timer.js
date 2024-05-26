@@ -3,7 +3,8 @@ import "flatpickr/dist/flatpickr.min.css";
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 const datetimePicker = document.getElementById('datetime-picker');
-const startButton = document.getElementById('button[data-start]');
+const startButton = document.querySelector('button[data-start]');
+startButton.disabled = true;
 const timerDisplay = document.getElementById('timer');
 let userSelectedDate;
 let countdownInterval;
@@ -69,10 +70,18 @@ flatpickr(datetimePicker, options);
 
     return { days, hours, minutes, seconds };
   }
-
-  function updateTimerDisplay(days, hours, minutes, seconds) {
-    timerDisplay.querySelector('[data-days]').textContent = String(days).padStart(2, '0');
-    timerDisplay.querySelector('[data-hours]').textContent = String(hours).padStart(2, '0');
-    timerDisplay.querySelector('[data-minutes]').textContent = String(minutes).padStart(2, '0');
-    timerDisplay.querySelector('[data-seconds]').textContent = String(seconds).padStart(2, '0');
+const timeToUpdate = {
+    days: document.querySelector('[data-days]'),
+    hours: document.querySelector('[data-hours]'),
+    minutes: document.querySelector('[data-minutes]'),
+    seconds: document.querySelector('[data-seconds]'),
+}
+function addZero(number) {
+    return number.padStart(2, '0');
+}
+function updateTimerDisplay(days, hours, minutes, seconds) {
+    timeToUpdate.days.textContent = addZero(days.toString());
+    timeToUpdate.hours.textContent = addZero(hours.toString());
+    timeToUpdate.minutes.textContent = addZero(minutes.toString());
+    timeToUpdate.seconds.textContent = addZero(seconds.toString());
 };
