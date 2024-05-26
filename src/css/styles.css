@@ -23,6 +23,7 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
+/*timer*/
 .body-timer {
   padding-top: 36px;
   padding-left: 156px;
@@ -98,3 +99,4 @@
   line-height: 150%;
   color: #2e2f42;
 }
+/*snackbar*/
