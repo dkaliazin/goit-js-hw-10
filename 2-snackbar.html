@@ -13,26 +13,39 @@
     />
     
     <title>goit-js-hw-10 snackbar</title>
-    <script type="module" crossorigin src="/goit-js-hw-10/assets/styles-57e1e2e1.js"></script>
-    <script type="module" crossorigin src="/goit-js-hw-10/assets/vendor-77e16229.js"></script>
-    <link rel="stylesheet" href="/goit-js-hw-10/assets/styles-3c9e5554.css">
+    <script type="module" crossorigin src="/goit-js-hw-10/commonHelpers2.js"></script>
+    <link rel="modulepreload" crossorigin href="/goit-js-hw-10/assets/modulepreload-polyfill-3cfb730f.js">
+    <link rel="modulepreload" crossorigin href="/goit-js-hw-10/assets/vendor-77e16229.js">
     <link rel="stylesheet" href="/goit-js-hw-10/assets/vendor-7a007824.css">
+    <link rel="stylesheet" href="/goit-js-hw-10/assets/2-snackbar-4c9298a1.css">
   </head>
   <body>
     <form class="form">
-      <label>
+      <label class="label-input">
         Delay (ms)
-        <input type="number" name="delay" required />
+        <input type="number" name="delay" class="delay-input" required />
       </label>
 
       <fieldset>
         <legend>State</legend>
-        <label>
-          <input type="radio" name="state" value="fulfilled" required />
+        <label class="label-radio">
+          <input
+            type="radio"
+            name="state"
+            class="radio-input"
+            value="fulfilled"
+            required
+          />
           Fulfilled
         </label>
-        <label>
-          <input type="radio" name="state" value="rejected" required />
+        <label class="label-radio">
+          <input
+            type="radio"
+            name="state"
+            class="radio-input"
+            value="rejected"
+            required
+          />
           Rejected
         </label>
       </fieldset>
