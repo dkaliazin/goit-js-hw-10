@@ -3,11 +3,10 @@ import "flatpickr/dist/flatpickr.min.css";
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 const datetimePicker = document.getElementById('datetime-picker');
-const startButton = document.getElementById('datetime-button');
+const startButton = document.getElementById('button[data-start]');
 const timerDisplay = document.getElementById('timer');
-
-let userSelectedDate = null;
-let countdownInterval = null;
+let userSelectedDate;
+let countdownInterval;
 const options = {
   enableTime: true,
   time_24hr: true,
@@ -26,32 +25,54 @@ const options = {
 };
 
 flatpickr(datetimePicker, options);
-startButton.addEventListener('click', () => {
-  if (userSelectedDate) {
-    startCountdown(userSelectedDate);
-  }
-});
-
-function startCountdown(endDate) {
-  const countdown = setInterval(() => {
-    const now = new Date();
-    const timeLeft = endDate - now;
-
-    if (timeLeft <= 0) {
-      clearInterval(countdown);
-      alert("Time's up!");
-      return;
+  startButton.addEventListener('click', () => {
+    if (userSelectedDate) {
+      startCountdown(userSelectedDate);
+      //startButton.disabled = true;
+      //datetimePicker.disabled = true;
     }
+  });
 
-    // Optional: Update your UI with the time left
-    console.log(formatTimeLeft(timeLeft));
-  }, 1000);
-}
+  function startCountdown(endDate) {
+    clearInterval(countdownInterval);
+    countdownInterval = setInterval(() => {
+      const now = new Date();
+      const timeLeft = endDate - now;
 
-function formatTimeLeft(timeLeft) {
-  const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-  return `${days}d ${hours}h ${minutes}m ${seconds}s`;
-}
+      if (timeLeft <= 0) {
+        clearInterval(countdownInterval);
+        updateTimerDisplay(0, 0, 0, 0);
+        datetimePicker.disabled = false;
+        startButton.disabled = true;
+        iziToast.success({
+          title: 'Finished',
+          message: 'Countdown has ended!',
+        });
+        return;
+      }
+
+      const time = convertMs(timeLeft);
+      updateTimerDisplay(time.days, time.hours, time.minutes, time.seconds);
+    }, 1000);
+  }
+
+  function convertMs(ms) {
+    const second = 1000;
+    const minute = second * 60;
+    const hour = minute * 60;
+    const day = hour * 24;
+
+    const days = Math.floor(ms / day);
+    const hours = Math.floor((ms % day) / hour);
+    const minutes = Math.floor((ms % hour) / minute);
+    const seconds = Math.floor((ms % minute) / second);
+
+    return { days, hours, minutes, seconds };
+  }
+
+  function updateTimerDisplay(days, hours, minutes, seconds) {
+    timerDisplay.querySelector('[data-days]').textContent = String(days).padStart(2, '0');
+    timerDisplay.querySelector('[data-hours]').textContent = String(hours).padStart(2, '0');
+    timerDisplay.querySelector('[data-minutes]').textContent = String(minutes).padStart(2, '0');
+    timerDisplay.querySelector('[data-seconds]').textContent = String(seconds).padStart(2, '0');
+};
